@@ -12,6 +12,15 @@
     <header class="title">
         <h1>Impulsa tu Negocio</h1>
         <p>Completa la información para aparecer en los mapas turísticos</p>
+        <nav id="navegacion">
+            <ul>
+                <li><a href="../../index.html">Inicio</a></li>
+                <li><a href="#">Sitios Turísticos</a></li>
+                <li><a href="#">Explora Negocios</a></li>
+                <li><a href="/ExperienciaInmersiva/pages/registro_negocio.jsp">Registra tu Local</a></li>
+                <li><a href="/ExperienciaInmersiva/pages/cuenta.jsp">Mi Cuenta</a></li>
+            </ul>
+        </nav>
     </header>
 
     <main class="section">

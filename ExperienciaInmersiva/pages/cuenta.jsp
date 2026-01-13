@@ -12,77 +12,95 @@
         <h1>Panel de Usuario</h1>
         <nav id="navegacion">
             <ul>
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="lugares.jsp">Sitios Turísticos</a></li>
-                <li><a href="negocios.jsp">Explora Negocios</a></li>
+                <li><a href="../../index.html">Inicio</a></li>
+                <li><a href="#">Sitios Turísticos</a></li>
+                <li><a href="#">Explora Negocios</a></li>
                 <li><a href="/ExperienciaInmersiva/pages/registro_negocio.jsp">Registra tu Local</a></li>
                 <li><a href="/ExperienciaInmersiva/pages/cuenta.jsp">Mi Cuenta</a></li>
             </ul>
         </nav>
     </header>
 
-    <main class="section">
+    <main>
         <%
-            // Simulación de ID de usuario (En un login real, este vendría de la sesión)
-            int idUsuarioLogueado = 1; 
+            Integer idUsuarioLogueado = (Integer) session.getAttribute("id_usuario");
             
-            try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/turismo_db", "root", "n0m3l0");
-             
-                PreparedStatement psUser = conexion.prepareStatement("SELECT * FROM usuario WHERE id_usuario = ?");
-                psUser.setInt(1, idUsuarioLogueado);
-                ResultSet rsUser = psUser.executeQuery();
+            if (idUsuarioLogueado != null) { 
+                try {
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+                    Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/turismo_db", "root", "n0m3l0");
+                
+                    PreparedStatement psUser = conexion.prepareStatement("SELECT * FROM usuario WHERE id_usuario = ?");
+                    psUser.setInt(1, idUsuarioLogueado);
+                    ResultSet rsUser = psUser.executeQuery();
 
-                if(rsUser.next()) {
+                    if(rsUser.next()) {
             %>
-                    <section class="tarjeta" style="width: 80%; margin-bottom: 30px;">
-                        <h2>Bienvenido, <span id="userName"><%= rsUser.getString("nombre") %></span></h2>
-                        <p><strong>Email:</strong> <%= rsUser.getString("email") %></p>
-                        <p><strong>Ciudad:</strong> <%= rsUser.getString("ciudad") %></p>
-                    </section>
+                        <section class="tarjeta" id="datosUsuario">
+                            <h2>Bienvenido, <span id="userName"><%= rsUser.getString("nombre") %></span></h2>
+                            <p><strong>Email:</strong> <%= rsUser.getString("email") %></p>
+                            <p><strong>Ciudad:</strong> <%= rsUser.getString("ciudad") %></p>
+                        </section>
+                        <section class="tarjetas_noticias">
+                            <h2>Tus Negocios Registrados</h2>
+                            <div class="tarjeta">
+                                <%
+                                    PreparedStatement psNeg = conexion.prepareStatement(
+                                        "SELECT n.*, l.nombre as lugar FROM negocio n " +
+                                        "JOIN lugar_turistico l ON n.id_lugar = l.id_lugar " +
+                                        "WHERE n.id_usuario = ?");
+                                    psNeg.setInt(1, idUsuarioLogueado);
+                                    ResultSet rsNeg = psNeg.executeQuery();
 
-                    <h3>Tus Negocios Registrados</h3>
-                    <div id="elemento_t">
-                <%}
-                    PreparedStatement psNeg = conexion.prepareStatement(
-                        "SELECT n.*, l.nombre as lugar FROM negocio n " +
-                        "JOIN lugar_turistico l ON n.id_lugar = l.id_lugar " +
-                        "WHERE n.id_usuario = ?");
-                    psNeg.setInt(1, idUsuarioLogueado);
-                    ResultSet rsNeg = psNeg.executeQuery();
-
-                    boolean tieneNegocios = false;
-                    while(rsNeg.next()) {
-                        tieneNegocios = true;
-                %>
-                    <div class="tarjeta">
-                        <div class="texto">
-                            <h2><%= rsNeg.getString("nombre_negocio") %></h2>
-                            <p><strong>Ubicación:</strong> Cerca de <%= rsNeg.getString("lugar") %></p>
-                            <p><strong>Categoría:</strong> <%= rsNeg.getString("categoria") %></p>
-                            <p><strong>Precio prom:</strong> $<%= rsNeg.getDouble("precio_promedio") %></p>
-                        </div>
-                    </div>
-                <% 
-                    } 
-                    if(!tieneNegocios) {
-                        out.println("<p>Aún no tienes negocios registrados.</p>");
+                                    boolean tieneNegocios = false;
+                                    while(rsNeg.next()) {
+                                        tieneNegocios = true;
+                                %>
+                                        <div class="tarjeta">
+                                            <div class="texto">
+                                                <h2><%= rsNeg.getString("nombre_negocio") %></h2>
+                                                <p><strong>Ubicación:</strong> Cerca de <%= rsNeg.getString("lugar") %></p>
+                                                <p><strong>Categoría:</strong> <%= rsNeg.getString("categoria") %></p>
+                                                <p><strong>Precio prom:</strong> $<%= rsNeg.getDouble("precio_promedio") %></p>
+                                            </div>
+                                        </div>
+                                <% 
+                                    } 
+                                    if(!tieneNegocios) {
+                                        out.println("<h4>Aún no tienes negocios registrados.</h4>");
+                                    }
+                                %>
+                            </div>
+                        </section>
+                        <button class="botonPeligro" onclick="window.location.href='logout.jsp'">Cerrar Sesión</button>
+            <%
                     }
-                %>
-            </div>
-        <%
-                conexion.close();
-            } catch(Exception e) {
-                out.println("<p>Error al cargar el perfil: " + e.getMessage() + "</p>");
-            }
+                    conexion.close();
+                } catch(Exception e) {
+                    out.println("<p>Error al cargar el perfil: " + e.getMessage() + "</p>");
+                }
+            } else { 
         %>
+                <section class="formulario">
+                    <div class="tarjetaForm">
+                        <h2>Iniciar Sesión</h2>
+                        <form action="procesar_login.jsp" method="POST">
+                            <label>Email:</label>
+                            <input type="email" name="email" required class="campoForm">
+                            <label>Contraseña:</label>
+                            <input type="password" name="pass" required class="campoForm">
+                            <button type="submit" class="boton">Entrar</button>
+                        </form>
+                        <hr>
+                        <p>¿No tienes cuenta? <a href="registro_user.jsp">Regístrate aquí</a></p>
+                    </div>
+                </section>
+        <% } %>
     </main>
-
-    <script>
-        const nombre = document.getElementById('userName').innerText;
-        localStorage.setItem('ultimoUsuario', nombre);
-        console.log("Usuario guardado en localStorage para la experiencia inmersiva.");
-    </script>
+    <footer>
+        Developed by <b><i>RVMA</i></b> 2026&copy
+        <br>
+        Contacto: <i>marcorebollo@gmail.com</i>
+    </footer>
 </body>
 </html>

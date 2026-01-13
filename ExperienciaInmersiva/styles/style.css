@@ -277,6 +277,10 @@ main {
     transition: transform 1s ease;
 }
 
+.tarjeta h2{
+    text-align: center;
+}
+
 #categoria {
     width: 100%;
     padding: 8px;
@@ -308,6 +312,77 @@ main {
     width: 100%;
     padding: 8px;
     color: black;
+}
+.formulario {
+    display: flex;             
+    justify-content: center;   
+    align-items: center;       
+    min-height: 60px;          
+    width: 100%;
+}
+
+.tarjetaForm {
+    width: 100%;
+    max-width: 400px;          
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
+    color: black;
+    text-align: center;
+}
+
+.campoForm {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    color: var(--main-bg-color);
+    border-radius: 8px;
+    box-sizing: border-box; 
+    display: block;
+}
+
+.formulario hr {
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+.tarjetaForm form{
+    margin-bottom: 20px;
+}
+
+.tarjetaForm .boton{
+    margin-top: 17px;
+}
+
+#datosUsuario {
+    justify-self: center;
+    width: 40%;
+    transition: transform 2.5s ease
+}
+
+#datosUsuario:hover{
+    transform: scale(1.01);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
+}
+
+.botonPeligro{
+    background:#a3473b;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 15px;
+    display: block;
+    margin: 20px auto;
+    cursor: pointer;
+    width: fit-content;
+    text-transform: uppercase;
+    transition: all 0.3s ease;;
+}
+
+.botonPeligro:hover{
+    background-color: #c0392b;
+    transform: translateY(-2px);
 }
 /* ==== FOOTER ==== */
 
