@@ -24,7 +24,7 @@
     </header>
 
     <main class="section">
-        <form action="procesar_registro.jsp" method="POST" id="formNegocio" class="tarjeta" style="min-width: 600px;"> <!--TODO: AGREGAR EL ARCHIVO PARA PROCESAR REGISTROS -->
+        <form action="procesar_registro_negocio.jsp" method="POST" id="formNegocio" class="tarjeta" style="min-width: 600px;">
             <h2 style="text-align: center; margin-bottom: 20px;">Datos del Establecimiento</h2>
             
             <div style="margin-bottom: 15px;">
@@ -57,7 +57,7 @@
                         while(rs.next()) {
                             hayDatos = true;
                 %>
-                            <option value="<%= rs.getInt("id_lugar") %>"><%= rs.getString("nombre") %></option>
+                            <option style="color: black;" value="<%= rs.getInt("id_lugar") %>"><%= rs.getString("nombre") %></option>
                 <% 
                         }
 

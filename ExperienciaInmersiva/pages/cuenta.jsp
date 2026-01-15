@@ -36,14 +36,14 @@
 
                     if(rsUser.next()) {
             %>
-                        <section class="tarjeta" id="datosUsuario">
+                        <section class="section" id="datosUsuario">
                             <h2>Bienvenido, <span id="userName"><%= rsUser.getString("nombre") %></span></h2>
                             <p><strong>Email:</strong> <%= rsUser.getString("email") %></p>
                             <p><strong>Ciudad:</strong> <%= rsUser.getString("ciudad") %></p>
                         </section>
                         <section class="tarjetas_noticias">
                             <h2>Tus Negocios Registrados</h2>
-                            <div class="tarjeta">
+                            <div class="section"  style="margin-top: 20px; padding: 20px;">
                                 <%
                                     PreparedStatement psNeg = conexion.prepareStatement(
                                         "SELECT n.*, l.nombre as lugar FROM negocio n " +

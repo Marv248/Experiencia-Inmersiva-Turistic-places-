@@ -275,6 +275,7 @@ main {
     border-radius: 15px;
     padding: 20px;
     transition: transform 1s ease;
+    border: 1px solid #b8a996;
 }
 
 .tarjeta h2{
